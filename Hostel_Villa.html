@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruijie Solution Expert</title>
+    <title>Experto en Soluciones Ruijie</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -49,26 +49,26 @@
 <body class="text-slate-800">
 
     <div id="app" class="min-h-screen flex flex-col">
-        <!-- Navigation -->
+        <!-- Navegación -->
         <nav class="bg-white/80 backdrop-blur-md border-b sticky top-0 z-50 no-print">
             <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-sm">
                         <i class="fas fa-cube"></i>
                     </div>
-                    <span class="font-bold text-xl tracking-tight">Ruijie Solution Expert</span>
+                    <span class="font-bold text-xl tracking-tight">Experto en Soluciones Ruijie</span>
                 </div>
                 <button onclick="resetApp()" class="text-sm text-slate-500 hover:text-indigo-600 transition-colors">
-                    <i class="fas fa-redo-alt mr-1"></i> Reset
+                    <i class="fas fa-redo-alt mr-1"></i> Reiniciar
                 </button>
             </div>
         </nav>
 
         <main class="flex-grow max-w-6xl mx-auto w-full px-6 py-6 flex flex-col">
-            <!-- Progress Bar -->
+            <!-- Barra de Progreso -->
             <div id="progress-container" class="mb-8 no-print transition-all">
                 <div class="flex justify-between mb-2">
-                    <span id="step-label" class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Configuration Progress</span>
+                    <span id="step-label" class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Progreso de Configuración</span>
                     <span id="step-percentage" class="text-xs font-bold text-indigo-600">60%</span>
                 </div>
                 <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
@@ -78,113 +78,113 @@
 
             <div id="wizard-container" class="flex-grow flex flex-col">
                 
-                <!-- Step 1: Hotel Parameters -->
+                <!-- Paso 1: Parámetros del Hotel -->
                 <div id="step-villa-config" class="step-content animate-fade-in no-print">
                     <div class="flex items-end justify-between mb-8">
                         <div>
-                            <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Hotel Details</h2>
-                            <p class="text-slate-500">Please enter the number of bedrooms and public spaces to generate your solution.</p>
+                            <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Detalles del Hotel</h2>
+                            <p class="text-slate-500">Ingrese el número de habitaciones y espacios públicos para generar su solución.</p>
                         </div>
                         <div class="flex gap-2">
                             <a href="index.html" class="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all flex items-center shadow-sm">
-                                <i class="fas fa-arrow-left mr-2"></i> Home
+                                <i class="fas fa-arrow-left mr-2"></i> Inicio
                             </a>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                        <!-- Bedroom Count -->
+                        <!-- Cantidad de Habitaciones -->
                         <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-center">
-                            <label class="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Number of Bedrooms (1-20)</label>
+                            <label class="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Número de Habitaciones (1-20)</label>
                             <div class="input-wrapper relative flex items-center bg-slate-50 border border-slate-200 rounded-2xl transition-all overflow-hidden">
                                 <div class="pl-5 text-indigo-500"><i class="fas fa-bed"></i></div>
-                                <input type="number" id="bedroom-count" min="1" max="20" placeholder="e.g. 5" class="w-full px-4 py-4 bg-transparent focus:outline-none text-xl font-bold">
-                                <span class="px-4 text-slate-400 font-bold select-none border-l border-slate-200 bg-slate-100/50 h-full flex items-center">Rooms</span>
+                                <input type="number" id="bedroom-count" min="1" max="20" placeholder="ej. 5" class="w-full px-4 py-4 bg-transparent focus:outline-none text-xl font-bold">
+                                <span class="px-4 text-slate-400 font-bold select-none border-l border-slate-200 bg-slate-100/50 h-full flex items-center">Cuartos</span>
                             </div>
                         </div>
                         
-                        <!-- Public Space Count -->
+                        <!-- Cantidad de Espacios Públicos -->
                         <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-center">
-                            <label class="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Number of Public Spaces (0-10)</label>
+                            <label class="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Número de Espacios Públicos (0-10)</label>
                             <div class="input-wrapper relative flex items-center bg-slate-50 border border-slate-200 rounded-2xl transition-all overflow-hidden">
                                 <div class="pl-5 text-indigo-500"><i class="fas fa-couch"></i></div>
-                                <input type="number" id="public-count" min="0" max="10" placeholder="e.g. 2" class="w-full px-4 py-4 bg-transparent focus:outline-none text-xl font-bold">
-                                <span class="px-4 text-slate-400 font-bold select-none border-l border-slate-200 bg-slate-100/50 h-full flex items-center">Units</span>
+                                <input type="number" id="public-count" min="0" max="10" placeholder="ej. 2" class="w-full px-4 py-4 bg-transparent focus:outline-none text-xl font-bold">
+                                <span class="px-4 text-slate-400 font-bold select-none border-l border-slate-200 bg-slate-100/50 h-full flex items-center">Áreas</span>
                             </div>
                         </div>
                     </div>
 
                     <button onclick="calculateVillaRecommendation()" class="w-full py-5 bg-indigo-600 text-white rounded-3xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-200 active:scale-[0.99] flex items-center justify-center text-lg">
-                        Generate Recommendation <i class="fas fa-magic ml-2"></i>
+                        Generar Recomendación <i class="fas fa-magic ml-2"></i>
                     </button>
                 </div>
 
-                <!-- Step 2: Results -->
+                <!-- Paso 2: Resultados -->
                 <div id="step-results" class="step-content hidden animate-fade-in">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                         <div>
-                            <h2 class="text-3xl font-black text-slate-900 mb-1">Recommended Solutions</h2>
+                            <h2 class="text-3xl font-black text-slate-900 mb-1">Soluciones Recomendadas</h2>
                         </div>
                         <div class="flex gap-2">
                             <button onclick="goToStep('step-villa-config', 60)" class="px-5 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl text-sm font-bold hover:bg-slate-50 transition-all shadow-sm flex items-center">
-                                <i class="fas fa-arrow-left mr-2"></i> Modify Inputs
+                                <i class="fas fa-arrow-left mr-2"></i> Modificar Datos
                             </button>
                             <a href="index.html" class="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-all shadow-sm flex items-center">
-                                <i class="fas fa-home mr-2"></i> Home
+                                <i class="fas fa-home mr-2"></i> Inicio
                             </a>
                         </div>
                     </div>
 
-                    <!-- Parameter Summary -->
+                    <!-- Resumen de Parámetros -->
                     <div class="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-4 mb-8 flex flex-wrap gap-x-8 gap-y-2">
                          <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Bedrooms:</span>
+                            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Habitaciones:</span>
                             <span id="review-bedrooms" class="font-bold text-slate-700">--</span>
                          </div>
                          <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Public Spaces:</span>
+                            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Espacios Públicos:</span>
                             <span id="review-public" class="font-bold text-slate-700">--</span>
                          </div>
                          <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Hotel Type:</span>
-                            <span class="font-bold text-slate-700">Hostel / Villa</span>
+                            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Tipo de Hotel:</span>
+                            <span class="font-bold text-slate-700">Hostal / Villa</span>
                          </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Budget -->
+                        <!-- Económico -->
                         <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden flex flex-col solution-card">
                             <div class="bg-indigo-500 p-6 flex justify-between items-center text-white">
                                 <div class="flex items-center gap-3">
                                     <i class="fas fa-wallet text-xl"></i>
-                                    <span class="font-bold text-lg tracking-tight">Budget Solution</span>
+                                    <span class="font-bold text-lg tracking-tight">Solución Económica</span>
                                 </div>
-                                <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-black uppercase rounded-full">Cost Effective</span>
+                                <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-black uppercase rounded-full">Costo-Efectiva</span>
                             </div>
                             <div class="p-8 flex-grow">
                                 <div id="list-low-budget" class="space-y-4"></div>
-                                <!-- Investment Summary -->
+                                <!-- Resumen de Inversión -->
                                 <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between">
-                                    <span class="text-sm font-bold text-slate-400 uppercase tracking-wider">Investment Estimate</span>
+                                    <span class="text-sm font-bold text-slate-400 uppercase tracking-wider">Inversión Estimada</span>
                                     <span class="text-2xl font-black text-indigo-600">$$</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Performance -->
+                        <!-- Alto Rendimiento -->
                         <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden flex flex-col solution-card">
                             <div class="bg-slate-900 p-6 flex justify-between items-center text-white">
                                 <div class="flex items-center gap-3">
                                     <i class="fas fa-rocket text-xl"></i>
-                                    <span class="font-bold text-lg tracking-tight">Performance Solution</span>
+                                    <span class="font-bold text-lg tracking-tight">Solución Pro</span>
                                 </div>
-                                <span class="px-3 py-1 bg-indigo-600 text-white text-[10px] font-black uppercase rounded-full">Premium Experience</span>
+                                <span class="px-3 py-1 bg-indigo-600 text-white text-[10px] font-black uppercase rounded-full">Experiencia Premium</span>
                             </div>
                             <div class="p-8 flex-grow">
                                 <div id="list-high-budget" class="space-y-4"></div>
-                                <!-- Investment Summary -->
+                                <!-- Resumen de Inversión -->
                                 <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between">
-                                    <span class="text-sm font-bold text-slate-400 uppercase tracking-wider">Investment Estimate</span>
+                                    <span class="text-sm font-bold text-slate-400 uppercase tracking-wider">Inversión Estimada</span>
                                     <span class="text-2xl font-black text-indigo-600">$$$</span>
                                 </div>
                             </div>
@@ -235,32 +235,32 @@
             const bedrooms = parseInt(bedroomInput.value);
             const publicSpaces = parseInt(publicInput.value);
 
-            // Validation for Bedrooms: 1-20
+            // Validación para Habitaciones: 1-20
             if (isNaN(bedrooms) || bedrooms < 1 || bedrooms > 20) {
-                showToast("⚠️ Invalid Bedroom count. Please enter a value between 1 and 20.");
+                showToast("⚠️ Número de habitaciones inválido. Ingrese un valor entre 1 y 20.");
                 bedroomInput.focus();
                 return;
             }
 
-            // Validation for Public Spaces: 0-10
+            // Validación para Espacios Públicos: 0-10
             if (isNaN(publicSpaces) || publicSpaces < 0 || publicSpaces > 10) {
-                showToast("⚠️ Invalid Public Space count. Please enter a value between 0 and 10.");
+                showToast("⚠️ Número de espacios públicos inválido. Ingrese un valor entre 0 y 10.");
                 publicInput.focus();
                 return;
             }
 
-            document.getElementById('review-bedrooms').innerText = bedrooms + ' Rooms';
-            document.getElementById('review-public').innerText = publicSpaces + ' Locations';
+            document.getElementById('review-bedrooms').innerText = bedrooms + ' Cuartos';
+            document.getElementById('review-public').innerText = publicSpaces + ' Ubicaciones';
 
             renderVillaResults(bedrooms, publicSpaces);
         }
 
         function renderVillaResults(bedrooms, publicSpaces) {
-            // --- Budget Solution Logic ---
+            // --- Lógica de Solución Económica ---
             let n_raw = bedrooms / 3;
             let n_bedroom_aps = 1;
             
-            // Excel-like logic: IF(MOD(Bedrooms/3*10, 10) > 3, Roundup, Rounddown)
+            // Lógica similar a Excel: IF(MOD(Bedrooms/3*10, 10) > 3, Roundup, Rounddown)
             if (( (n_raw * 10) % 10 ) > 3) {
                 n_bedroom_aps = Math.ceil(n_raw);
             } else {
@@ -272,19 +272,19 @@
             let m = Math.ceil(n / 4);
 
             const lowBudgetItems = [
-                { id: 'GW', model: 'RG-EG310GH-E', label: 'Core Gateway', qty: 1 },
-                { id: 'SW', model: 'RG-ES206GS-P', label: 'PoE Switch', qty: m },
-                { id: 'AP', model: 'RG-RAP62', label: 'Wi-Fi 6 AP', qty: n }
+                { id: 'GW', model: 'RG-EG310GH-E', label: 'Gateway Core', qty: 1 },
+                { id: 'SW', model: 'RG-ES206GS-P', label: 'Switch PoE', qty: m },
+                { id: 'AP', model: 'RG-RAP62', label: 'AP Wi-Fi 6', qty: n }
             ];
 
-            // --- Performance Solution Logic ---
+            // --- Lógica de Solución de Alto Rendimiento ---
             let n_high = bedrooms + publicSpaces;
             let m1 = Math.ceil(n_high / 12);
 
             const highBudgetItems = [
-                { id: 'GW', model: 'RG-EG310GH-E', label: 'Core Gateway', qty: 1 },
-                { id: 'SW', model: 'RG-ES220GS-P', label: 'PoE Switch', qty: m1 },
-                { id: 'AP', model: 'RG-RAP1260', label: 'High-Perf Wall AP', qty: n_high }
+                { id: 'GW', model: 'RG-EG310GH-E', label: 'Gateway Core', qty: 1 },
+                { id: 'SW', model: 'RG-ES220GS-P', label: 'Switch PoE', qty: m1 },
+                { id: 'AP', model: 'RG-RAP1260', label: 'AP de Pared Pro', qty: n_high }
             ];
 
             renderItems('list-low-budget', lowBudgetItems);
@@ -312,8 +312,8 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">Quantity</div>
-                        <div class="text-xl font-black text-indigo-600">${item.qty}<span class="text-[10px] ml-1 text-slate-400 font-bold uppercase tracking-widest">Units</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">Cantidad</div>
+                        <div class="text-xl font-black text-indigo-600">${item.qty}<span class="text-[10px] ml-1 text-slate-400 font-bold uppercase tracking-widest">Unid.</span></div>
                     </div>
                 </div>
                 `;
