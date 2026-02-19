@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>锐捷方案专家 - 网络配置工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .solution-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .solution-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- 导航栏 -->
+        <nav class="bg-white/80 backdrop-blur-md border-b sticky top-0 z-50 no-print">
+            <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-sm">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight">锐捷方案专家</span>
+                </div>
+                <button onclick="resetApp()" class="text-sm text-slate-500 hover:text-blue-600 transition-colors">
+                    <i class="fas fa-redo-alt mr-1"></i> 重置
+                </button>
+            </div>
+        </nav>
+
+        <main class="flex-grow max-w-6xl mx-auto w-full px-6 py-6 flex flex-col">
+            <!-- 进度条 -->
+            <div id="progress-container" class="mb-8 no-print transition-all">
+                <div class="flex justify-between mb-2">
+                    <span id="step-label" class="text-[10px] font-bold uppercase tracking-widest text-slate-400">网络配置进度</span>
+                    <span id="step-percentage" class="text-xs font-bold text-blue-600">45%</span>
+                </div>
+                <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-blue-600 h-full rounded-full transition-all duration-700 ease-in-out" style="width: 45%"></div>
+                </div>
+            </div>
+
+            <div id="wizard-container" class="flex-grow flex flex-col">
+                
+                <!-- 步骤 1: 酒店类型选择 -->
+                <div id="step-hotel-type" class="step-content animate-fade-in no-print">
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-extrabold text-slate-900 mb-2">选择酒店类型</h2>
+                        <p class="text-slate-500">我们将根据不同的建筑布局为您匹配最精确的无线勘测模型。</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div onclick="goToStep('step-standard-hotel', 70)" class="p-8 bg-white border border-slate-200 rounded-3xl cursor-pointer hover:border-blue-500 hover:shadow-xl transition-all group relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                                <i class="fas fa-hotel text-8xl"></i>
+                            </div>
+                            <i class="fas fa-hotel text-4xl text-blue-600 mb-4 group-hover:scale-110 transition-transform"></i>
+                            <h3 class="text-xl font-bold mb-2">走廊式标准酒店</h3>
+                            <p class="text-slate-500 leading-relaxed">客房沿走廊对称分布，标准砖混/轻质隔墙，常见于商旅及快捷连锁酒店。</p>
+                        </div>
+                        <div class="p-8 bg-white border border-slate-200 rounded-3xl opacity-60 cursor-not-allowed group">
+                            <i class="fas fa-home text-4xl text-slate-300 mb-4"></i>
+                            <h3 class="text-xl font-bold mb-2 text-slate-400">Hostel/Villa</h3>
+                            <p class="text-slate-400">目前仅针对标准化布局开放，定制化布局请咨询线下工程师。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤 2: 参数输入 -->
+                <div id="step-standard-hotel" class="step-content hidden animate-fade-in no-print">
+                    <div class="flex items-end justify-between mb-8">
+                        <div>
+                            <h2 class="text-3xl font-extrabold text-slate-900 mb-2">请输入酒店规模数据</h2>
+                            <p class="text-slate-500">请输入具体的房间规模及覆盖区域。</p>
+                        </div>
+                        <button onclick="goToStep('step-hotel-type', 45)" class="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all flex items-center shadow-sm">
+                            <i class="fas fa-arrow-left mr-2"></i> 上一步
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                        <div class="lg:col-span-1 space-y-4">
+                            <!-- 客房数量 -->
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                                <label class="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">客房数量</label>
+                                <div class="input-wrapper relative flex items-center bg-slate-50 border border-slate-200 rounded-2xl transition-all overflow-hidden">
+                                    <input type="number" id="room-count" placeholder="1-120" class="w-full px-4 py-3 bg-transparent focus:outline-none text-lg font-bold">
+                                    <span class="px-4 text-slate-400 font-bold select-none border-l border-slate-200 bg-slate-100/50 h-full flex items-center">间</span>
+                                </div>
+                                <p class="text-[10px] text-slate-400 mt-2 italic">* 超过 120 间需专家支持</p>
+                            </div>
+                            
+                            <!-- 平均客房面积 -->
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                                <label class="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">平均客房面积</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <label class="radio-card relative flex items-center justify-center p-3 border rounded-2xl cursor-pointer">
+                                        <input type="radio" name="room-area" value="small" class="hidden peer" checked>
+                                        <div class="peer-checked:bg-blue-50 peer-checked:border-blue-600 absolute inset-0 rounded-2xl border border-transparent transition-all"></div>
+                                        <span class="relative z-10 text-sm font-bold">&lt; 30㎡</span>
+                                    </label>
+                                    <label class="radio-card relative flex items-center justify-center p-3 border rounded-2xl cursor-pointer">
+                                        <input type="radio" name="room-area" value="large" class="hidden peer">
+                                        <div class="peer-checked:bg-blue-50 peer-checked:border-blue-600 absolute inset-0 rounded-2xl border border-transparent transition-all"></div>
+                                        <span class="relative z-10 text-sm font-bold">&gt; 30㎡</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- 会议室数量 -->
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                                <label class="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">会议室数量</label>
+                                <div class="input-wrapper relative flex items-center bg-slate-50 border border-slate-200 rounded-2xl transition-all overflow-hidden">
+                                    <input type="number" id="meeting-count" placeholder="0-10" class="w-full px-4 py-3 bg-transparent focus:outline-none text-lg font-bold">
+                                    <span class="px-4 text-slate-400 font-bold select-none border-l border-slate-200 bg-slate-100/50 h-full flex items-center">间</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-2 space-y-4">
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center">
+                                    <i class="fas fa-door-open mr-2 text-blue-600"></i> 室内公共空间覆盖需求
+                                </h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <label class="checkbox-card relative flex items-center p-4 border rounded-2xl cursor-pointer bg-slate-50/50">
+                                        <input type="checkbox" id="check-lobby" class="w-5 h-5 text-blue-600 rounded-lg mr-3">
+                                        <span class="font-bold text-sm">酒店大堂</span>
+                                    </label>
+                                    <label class="checkbox-card relative flex items-center p-4 border rounded-2xl cursor-pointer bg-slate-50/50">
+                                        <input type="checkbox" id="check-gym" class="w-5 h-5 text-blue-600 rounded-lg mr-3">
+                                        <span class="font-bold text-sm">健身房</span>
+                                    </label>
+                                    <label class="checkbox-card relative flex items-center p-4 border rounded-2xl cursor-pointer bg-slate-50/50">
+                                        <input type="checkbox" id="check-indoor-pool" class="w-5 h-5 text-blue-600 rounded-lg mr-3">
+                                        <span class="font-bold text-sm">室内泳池</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center">
+                                    <i class="fas fa-tree mr-2 text-green-600"></i> 室外公共空间覆盖需求
+                                </h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <label class="checkbox-card relative flex items-center p-4 border rounded-2xl cursor-pointer bg-slate-50/50">
+                                        <input type="checkbox" id="check-outdoor-pool" class="w-5 h-5 text-blue-600 rounded-lg mr-3">
+                                        <span class="font-bold text-sm">露天泳池</span>
+                                    </label>
+                                    <label class="checkbox-card relative flex items-center p-4 border rounded-2xl cursor-pointer bg-slate-50/50">
+                                        <input type="checkbox" id="check-garden" class="w-5 h-5 text-blue-600 rounded-lg mr-3">
+                                        <span class="font-bold text-sm">景观花园</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="calculateRecommendation()" class="w-full py-5 bg-blue-600 text-white rounded-3xl font-bold hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 active:scale-[0.99] flex items-center justify-center text-lg">
+                        点击生成方案 <i class="fas fa-bolt ml-2"></i>
+                    </button>
+                </div>
+
+                <!-- 步骤 3: 专家支持页 -->
+                <div id="step-expert-required" class="step-content hidden animate-fade-in flex-grow flex items-center justify-center py-12">
+                    <div class="max-w-xl w-full text-center px-6">
+                        <div class="mb-8 relative inline-block">
+                            <div class="w-32 h-32 bg-orange-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user-tie text-5xl text-orange-600"></i>
+                            </div>
+                        </div>
+                        <h2 class="text-4xl font-black text-slate-800 mb-6 tracking-tight">Expert Support Required</h2>
+                        <p class="text-slate-500 text-lg leading-relaxed mb-10">
+                            当前规模 (<span id="expert-scale-text" class="font-bold text-slate-700"></span>) 已超出快捷推荐范围。<br>需要专业的网络规划以保障高密度环境体验。
+                        </p>
+                        <button onclick="goToStep('step-standard-hotel', 70)" class="w-full py-4 bg-[#1e293b] text-white rounded-2xl font-bold hover:bg-[#0f172a] transition-all shadow-xl text-lg tracking-wide">
+                            Back to Edit
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 步骤 4: 结果展示 -->
+                <div id="step-results" class="step-content hidden animate-fade-in">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                        <div>
+                            <h2 class="text-3xl font-black text-slate-900 mb-1">推荐方案详情</h2>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="goToStep('step-standard-hotel', 70)" class="px-5 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl text-sm font-bold hover:bg-slate-50 transition-all shadow-sm flex items-center">
+                                <i class="fas fa-arrow-left mr-2"></i> 返回修改
+                            </button>
+                            <button onclick="resetApp()" class="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-all shadow-sm flex items-center">
+                                <i class="fas fa-home mr-2"></i> 首页
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 参数回顾卡片 -->
+                    <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 mb-8 flex flex-wrap gap-x-8 gap-y-2">
+                         <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">客房数量:</span>
+                            <span id="review-rooms" class="font-bold text-slate-700">--</span>
+                         </div>
+                         <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">会议室:</span>
+                            <span id="review-meetings" class="font-bold text-slate-700">--</span>
+                         </div>
+                         <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">客房面积:</span>
+                            <span id="review-area" class="font-bold text-slate-700">--</span>
+                         </div>
+                         <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">覆盖区域:</span>
+                            <span id="review-zones" class="font-bold text-slate-700 italic">--</span>
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- 方案 A: Low Budget -->
+                        <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden flex flex-col solution-card">
+                            <div class="bg-[#2b59ff] p-6 flex justify-between items-center">
+                                <div class="flex items-center gap-3 text-white">
+                                    <i class="fas fa-wallet text-xl"></i>
+                                    <span class="font-bold text-lg tracking-tight">低预算方案</span>
+                                </div>
+                                <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-black uppercase rounded-full">Cost-effective</span>
+                            </div>
+                            <div class="p-8 flex-grow">
+                                <div id="list-low-budget" class="space-y-4"></div>
+                                <div class="mt-10 pt-6 border-t border-slate-100">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">估算投资金额</div>
+                                    <div class="text-4xl font-black text-slate-900">$$</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 方案 B: Performance Plan -->
+                        <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden flex flex-col solution-card">
+                            <div id="performance-header" class="bg-[#111111] p-6 flex justify-between items-center">
+                                <div class="flex items-center gap-3 text-white">
+                                    <i class="fas fa-rocket text-xl"></i>
+                                    <span class="font-bold text-lg tracking-tight">高性能方案</span>
+                                </div>
+                                <span id="performance-tag" class="px-3 py-1 bg-[#d97706] text-white text-[10px] font-black uppercase rounded-full">Premium Experience</span>
+                            </div>
+                            <div class="p-8 flex-grow">
+                                <div id="list-high-budget" class="space-y-4"></div>
+                                <div class="mt-10 pt-6 border-t border-slate-100">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">估算投资金额</div>
+                                    <div class="text-4xl font-black text-slate-900">$$$</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+        
+        <!-- Toast 提示 -->
+        <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full text-xs font-bold shadow-2xl opacity-0 translate-y-10 transition-all duration-300 z-[100] pointer-events-none">
+            <span id="toast-message"></span>
+        </div>
+    </div>
+
+    <script>
+        const MAX_ROOM_LIMIT = 120; 
+
+        function resetApp() { location.reload(); }
+
+        function goToStep(stepId, progress) {
+            document.querySelectorAll('.step-content').forEach(s => s.classList.add('hidden'));
+            document.getElementById(stepId).classList.remove('hidden');
+            updateProgressBar(progress);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgressBar(val) {
+            const bar = document.getElementById('progress-bar');
+            const percent = document.getElementById('step-percentage');
+            if(bar) bar.style.width = val + '%';
+            if(percent) percent.innerText = val + '%';
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('opacity-0', 'translate-y-10');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-10');
+                toast.classList.remove('opacity-100', 'translate-y-0');
+            }, 3000);
+        }
+
+        function calculateRecommendation() {
+            const rooms = parseInt(document.getElementById('room-count').value) || 0;
+            const meetingVal = document.getElementById('meeting-count').value;
+            const meetings = meetingVal === "" ? 0 : (parseInt(meetingVal) || 0);
+            const area = document.querySelector('input[name="room-area"]:checked').value;
+
+            if (rooms < 1) { showToast("⚠️ 请输入客房数量"); return; }
+
+            if (rooms > MAX_ROOM_LIMIT) {
+                document.getElementById('expert-scale-text').innerText = `${rooms} 间客房`;
+                goToStep('step-expert-required', 95);
+                return;
+            }
+
+            document.getElementById('review-rooms').innerText = rooms + ' 间';
+            document.getElementById('review-meetings').innerText = meetings + ' 间';
+            document.getElementById('review-area').innerText = area === 'small' ? '< 30㎡' : '> 30㎡';
+            
+            const zones = [];
+            if(document.getElementById('check-lobby').checked) zones.push('大堂');
+            if(document.getElementById('check-gym').checked) zones.push('健身房');
+            if(document.getElementById('check-indoor-pool').checked) zones.push('室内泳池');
+            if(document.getElementById('check-outdoor-pool').checked) zones.push('露天泳池');
+            if(document.getElementById('check-garden').checked) zones.push('花园');
+            document.getElementById('review-zones').innerText = zones.length > 0 ? zones.join('、') : '仅客房区';
+
+            renderResults(rooms, meetings, area);
+        }
+
+        function renderResults(rooms, meetings, area) {
+            const indoorSpaces = ['check-lobby', 'check-gym', 'check-indoor-pool'].filter(id => document.getElementById(id).checked).length;
+            const outdoorSpaces = ['check-outdoor-pool', 'check-garden'].filter(id => document.getElementById(id).checked).length;
+
+            let lowBudgetItems = [];
+            let highBudgetItems = [];
+
+            if (area === 'small') {
+                // 原有的 < 30平米 逻辑
+                let n_raw = rooms / 3;
+                let n = Math.max(( ( (rooms / 3) * 10 ) % 10 > 3 ) ? Math.ceil(n_raw) : Math.floor(n_raw), 1);
+                let m = Math.ceil((n + meetings + indoorSpaces + outdoorSpaces) / 10);
+                let m_high = Math.ceil((rooms + meetings + indoorSpaces + outdoorSpaces) / 10);
+
+                lowBudgetItems = [
+                    { id: 'GW', model: 'RG-EG1510XS', label: '核心网关', qty: 1 },
+                    { id: 'SW', model: 'RG-ES220GS-P', label: 'POE 交换机', qty: m },
+                    { id: 'AP', model: 'RG-RAP62', label: 'Wi-Fi 6 客房 AP', qty: n },
+                    { id: 'AP', model: 'RG-RAP2260(E)', label: '会议室高性能 AP', qty: meetings },
+                    { id: 'AP', model: 'RG-RAP2266', label: '室内公共 AP', qty: indoorSpaces },
+                    { id: 'AP', model: 'RG-RAP62-OD', label: '室外防水 AP', qty: outdoorSpaces }
+                ];
+
+                highBudgetItems = [
+                    { id: 'GW', model: 'RG-EG1510XS', label: '10G 核心网关', qty: 1 },
+                    { id: 'SW', model: 'RG-ES220GS-P', label: '智能 POE 交换机', qty: m_high },
+                    { id: 'AP', model: 'RG-RAP1260', label: '面板 AP (全覆盖)', qty: rooms },
+                    { id: 'AP', model: 'RG-RAP2260(E)', label: '会议室极致 AP', qty: meetings },
+                    { id: 'AP', model: 'RG-RAP2266', label: '室内公共 AP', qty: indoorSpaces },
+                    { id: 'AP', model: 'RG-RAP6262(G)', label: '全向大功率室外 AP', qty: outdoorSpaces }
+                ];
+
+                // 核心交换机逻辑 (<30平米)
+                if (m >= 7) lowBudgetItems.splice(1, 0, { id: 'SW_CORE', model: 'RG-NBS3200-24GT4XS', label: '核心交换机', qty: 1 });
+                if (m_high >= 7) highBudgetItems.splice(1, 0, { id: 'SW_CORE', model: 'RG-NBS3200-24GT4XS', label: '核心交换机', qty: 1 });
+
+            } else {
+                // 客房面积 > 30平米 逻辑 (新逻辑)
+                
+                // 低预算方案计算
+                let totalRAP_Low = rooms + meetings + indoorSpaces + outdoorSpaces;
+                let m_low = Math.ceil(totalRAP_Low / 12);
+                
+                lowBudgetItems = [
+                    { id: 'GW', model: 'RG-EG1510XS', label: '核心网关', qty: 1 },
+                    { id: 'SW', model: 'RG-ES220GS-P', label: 'POE 交换机', qty: m_low },
+                    { id: 'AP', model: 'RG-RAP1260', label: 'Wi-Fi 6 客房面板', qty: rooms },
+                    { id: 'AP', model: 'RG-RAP2260(E)', label: '会议室高性能 AP', qty: meetings },
+                    { id: 'AP', model: 'RG-RAP2266', label: '室内公共 AP', qty: indoorSpaces },
+                    { id: 'AP', model: 'RG-RAP62-OD', label: '室外空间 AP', qty: outdoorSpaces }
+                ];
+                if (m_low >= 7) {
+                    lowBudgetItems.splice(1, 0, { id: 'SW_CORE', model: 'RG-NBS3200-24GT4XS', label: '核心交换机', qty: 1 });
+                }
+
+                // 高预算方案计算
+                let totalRAP_High = rooms + (meetings + indoorSpaces) + outdoorSpaces;
+                let m_high = Math.ceil(totalRAP_High / 12);
+
+                highBudgetItems = [
+                    { id: 'GW', model: 'RG-EG1510XS', label: '10G 核心网关', qty: 1 },
+                    { id: 'SW', model: 'RG-NBS3300-16MG4XS-HP', label: '2.5G Multi-G 交换机', qty: m_high },
+                    { id: 'AP', model: 'RG-RAP72-Wall', label: 'Wi-Fi 7 客房面板', qty: rooms },
+                    { id: 'AP', model: 'RG-RAP72Pro', label: 'Wi-Fi 7 室内全向 AP', qty: (meetings + indoorSpaces) },
+                    { id: 'AP', model: 'RG-RAP72Pro-OD', label: 'Wi-Fi 7 室外全向 AP', qty: outdoorSpaces }
+                ];
+                if (m_high >= 7) {
+                    highBudgetItems.splice(1, 0, { id: 'SW_CORE_H', model: 'RG-NBS5500-12XS', label: '10G 核心交换机', qty: 1 });
+                }
+            }
+
+            renderItems('list-low-budget', lowBudgetItems);
+            renderItems('list-high-budget', highBudgetItems);
+
+            goToStep('step-results', 100);
+        }
+
+        function renderItems(containerId, items) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = items.filter(i => i.qty > 0).map(item => {
+                let icon = 'fa-wifi';
+                if(item.id === 'GW') icon = 'fa-microchip';
+                if(item.id.includes('SW')) icon = 'fa-server';
+                
+                return `
+                <div class="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:bg-white hover:border-blue-200 transition-all group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-blue-600 shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <i class="fas ${icon} text-lg"></i>
+                        </div>
+                        <div>
+                            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">${item.label}</div>
+                            <div class="font-extrabold text-slate-900">${item.model}</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">Qty</div>
+                        <div class="text-xl font-black text-blue-600">${item.qty}<span class="text-[10px] ml-1 text-slate-400 font-bold uppercase tracking-widest">unit</span></div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>
