@@ -160,6 +160,12 @@
                                 <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full border border-white/30 backdrop-blur-sm">Costo-efectivo</span>
                             </div>
                             <div class="bg-white border-x border-b border-slate-100 p-6 rounded-b-3xl custom-shadow flex-grow flex flex-col">
+                                <!-- Area para razones de recomendación específicas Plan Entry -->
+                                <div id="plan-entry-reason" class="hidden mb-4 p-4 bg-blue-50 border border-blue-100 rounded-xl text-xs text-blue-800 leading-relaxed">
+                                    <ul id="plan-entry-reason-list" class="list-disc ml-4 space-y-1">
+                                        <!-- Se llena dinámicamente -->
+                                    </ul>
+                                </div>
                                 <div id="plan-entry-items" class="space-y-3 flex-grow"></div>
                                 <div class="mt-8 pt-6 border-t border-slate-100">
                                     <div class="text-slate-400 text-xs mb-1 uppercase tracking-tight">Inversión Estimada</div>
@@ -174,6 +180,12 @@
                                 <span class="text-[10px] bg-orange-500/20 px-2 py-0.5 rounded-full border border-orange-500/30 backdrop-blur-sm text-orange-200">Experiencia Premium</span>
                             </div>
                             <div class="bg-white border-x border-b border-slate-100 p-6 rounded-b-3xl custom-shadow flex-grow flex flex-col">
+                                <!-- Area para razones de recomendación específicas Plan Pro -->
+                                <div id="plan-pro-reason" class="hidden mb-4 p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 leading-relaxed">
+                                    <ul id="plan-pro-reason-list" class="list-disc ml-4 space-y-1">
+                                        <!-- Se llena dinámicamente -->
+                                    </ul>
+                                </div>
                                 <div id="plan-pro-items" class="space-y-3 flex-grow"></div>
                                 <div class="mt-8 pt-6 border-t border-slate-100">
                                     <div class="text-slate-400 text-xs mb-1 uppercase tracking-tight">Inversión Estimada</div>
@@ -316,6 +328,96 @@
             document.getElementById('progress-container').classList.add('hidden');
             document.getElementById('step-result').classList.remove('hidden');
             document.getElementById('summary-text').innerText = `${selections.area}㎡ / ${selections.staff} Pers. (${subLabel})`;
+
+            // --- Razones para Plan Entry ---
+            const hasEG105GP = data.entry.items.some(i => i.model === catalog.devices.gateway.EG105GP.model);
+            const hasRAP2260G = data.entry.items.some(i => i.model === catalog.devices.ap.RAP2260G.model);
+            const hasEG310GHP = data.entry.items.some(i => i.model === catalog.devices.gateway.EG310GHP.model);
+            const hasRAP2260E = data.entry.items.some(i => i.model === catalog.devices.ap.RAP2260E.model);
+            const hasEG310GH = data.entry.items.some(i => i.model === catalog.devices.gateway.EG310GH.model);
+            const hasES210GSP = data.entry.items.some(i => i.model === catalog.devices.switch.ES210GSP.model);
+            const hasRAP2260 = data.entry.items.some(i => i.model === catalog.devices.ap.RAP2260.model);
+            
+            const reasonEntryBox = document.getElementById('plan-entry-reason');
+            const reasonEntryList = document.getElementById('plan-entry-reason-list');
+            
+            if (hasEG105GP && hasRAP2260G) {
+                reasonEntryBox.classList.remove('hidden');
+                reasonEntryList.innerHTML = `
+                    <li>Cobertura Wi-Fi total.</li>
+                    <li>Colaboración de alta velocidad con Wi-Fi 6.</li>
+                    <li>Sin necesidad de Switch, ahorro de costos.</li>
+                    <li>Uplink ISP dual, equilibrio de carga y respaldo de enlace.</li>
+                    <li>Filtro de App/URL para limitar aplicaciones no deseadas.</li>
+                    <li>Nube gratuita, gestión sencilla y de alta eficiencia.</li>
+                `;
+            } else if (hasEG310GHP && hasRAP2260E) {
+                reasonEntryBox.classList.remove('hidden');
+                reasonEntryList.innerHTML = `
+                    <li>AP de alto rendimiento para espacios de trabajo de alta densidad.</li>
+                    <li>Sin necesidad de Switch, ahorro de costos.</li>
+                    <li>Uplink ISP múltiple, equilibrio de carga.</li>
+                    <li>Filtro de App/URL para limitar aplicaciones no deseadas.</li>
+                    <li>64 túneles VPN para trabajadores remotos.</li>
+                    <li>Nube gratuita, gestión sencilla y de alta eficiencia.</li>
+                `;
+            } else if (hasEG310GH && hasES210GSP && hasRAP2260) {
+                reasonEntryBox.classList.remove('hidden');
+                reasonEntryList.innerHTML = `
+                    <li>Cobertura total de señal con Wi-Fi 6 Pro.</li>
+                    <li>Uplink ISP múltiple, equilibrio de carga.</li>
+                    <li>Filtro de App/URL para limitar aplicaciones no deseadas.</li>
+                    <li>64 túneles VPN para trabajadores remotos.</li>
+                    <li>Nube gratuita, gestión sencilla y de alta eficiencia.</li>
+                `;
+            } else {
+                reasonEntryBox.classList.add('hidden');
+            }
+
+            // --- Razones para Plan Pro ---
+            const hasEG406XSP = data.pro.items.some(i => i.model === catalog.devices.gateway.EG406XSP.model);
+            const hasRAP72 = data.pro.items.some(i => i.model === catalog.devices.ap.RAP72.model);
+            const hasRAP72Pro = data.pro.items.some(i => i.model === catalog.devices.ap.RAP72Pro.model);
+            const hasEG406XS = data.pro.items.some(i => i.model === catalog.devices.gateway.EG406XS.model);
+            const hasES209MGP = data.pro.items.some(i => i.model === catalog.devices.switch.ES209MGP.model);
+            
+            const reasonProBox = document.getElementById('plan-pro-reason');
+            const reasonProList = document.getElementById('plan-pro-reason-list');
+
+            if (hasEG406XSP && hasRAP72) {
+                reasonProBox.classList.remove('hidden');
+                reasonProList.innerHTML = `
+                    <li>Cobertura total de señal con Wi-Fi 7.</li>
+                    <li>Alto rendimiento con uplink de 10G y downlink de 2.5G.</li>
+                    <li>Uplink ISP múltiple, equilibrio de carga y respaldo de enlace.</li>
+                    <li>Sin necesidad de Switch, ahorro de costos.</li>
+                    <li>Filtro de App/URL para limitar aplicaciones no deseadas.</li>
+                    <li>Nube gratuita, gestión sencilla y de alta eficiencia.</li>
+                `;
+            } else if (hasEG406XSP && hasRAP72Pro) {
+                reasonProBox.classList.remove('hidden');
+                reasonProList.innerHTML = `
+                    <li>Cobertura total de señal y alto rendimiento Wi-Fi con Wi-Fi 7 Pro.</li>
+                    <li>Alto rendimiento con uplink de 10G y downlink de 2.5G.</li>
+                    <li>Sin necesidad de Switch, ahorro de costos.</li>
+                    <li>Uplink ISP múltiple, equilibrio de carga y respaldo de enlace.</li>
+                    <li>Filtro de App/URL para limitar aplicaciones no deseadas.</li>
+                    <li>100 túneles VPN para trabajadores remotos.</li>
+                    <li>Nube gratuita, gestión sencilla y de alta eficiencia.</li>
+                `;
+            } else if (hasEG406XS && hasES209MGP && hasRAP72Pro) {
+                reasonProBox.classList.remove('hidden');
+                reasonProList.innerHTML = `
+                    <li>Cobertura total de señal con Wi-Fi 7 Pro.</li>
+                    <li>Alto rendimiento con uplink de 10G y downlink de 2.5G.</li>
+                    <li>Uplink ISP múltiple, equilibrio de carga.</li>
+                    <li>Filtro de App/URL para limitar aplicaciones no deseadas.</li>
+                    <li>100 túneles VPN para trabajadores remotos.</li>
+                    <li>Nube gratuita, gestión sencilla y de alta eficiencia.</li>
+                `;
+            } else {
+                reasonProBox.classList.add('hidden');
+            }
 
             renderPlanColumn('plan-entry-items', data.entry.items, 'blue');
             renderPlanColumn('plan-pro-items', data.pro.items, 'slate');
