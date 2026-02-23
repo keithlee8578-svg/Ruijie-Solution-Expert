@@ -273,6 +273,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Plan Económico -->
                         <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden flex flex-col solution-card">
                             <div class="bg-[#2b59ff] p-6 flex justify-between items-center">
                                 <div class="flex items-center gap-3 text-white">
@@ -282,6 +283,10 @@
                                 <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-black uppercase rounded-full">Costo-efectiva</span>
                             </div>
                             <div class="p-8 flex-grow">
+                                <!-- Razones Plan Económico -->
+                                <div id="reason-low-budget" class="hidden mb-6 p-4 bg-blue-50 border border-blue-100 rounded-2xl text-[11px] text-blue-800 leading-relaxed">
+                                    <ul id="reason-list-low" class="list-disc ml-4 space-y-1 font-medium"></ul>
+                                </div>
                                 <div id="list-low-budget" class="space-y-4"></div>
                                 <div class="mt-10 pt-6 border-t border-slate-100">
                                     <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Presupuesto Estimado</div>
@@ -290,6 +295,7 @@
                             </div>
                         </div>
 
+                        <!-- Plan Pro -->
                         <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden flex flex-col solution-card">
                             <div id="performance-header" class="bg-[#111111] p-6 flex justify-between items-center">
                                 <div class="flex items-center gap-3 text-white">
@@ -299,6 +305,10 @@
                                 <span id="performance-tag" class="px-3 py-1 bg-[#d97706] text-white text-[10px] font-black uppercase rounded-full">Experiencia Premium</span>
                             </div>
                             <div class="p-8 flex-grow">
+                                <!-- Razones Plan Pro -->
+                                <div id="reason-high-budget" class="hidden mb-6 p-4 bg-slate-50 border border-slate-200 rounded-2xl text-[11px] text-slate-700 leading-relaxed">
+                                    <ul id="reason-list-high" class="list-disc ml-4 space-y-1 font-medium"></ul>
+                                </div>
                                 <div id="list-high-budget" class="space-y-4"></div>
                                 <div class="mt-10 pt-6 border-t border-slate-100">
                                     <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Presupuesto Estimado</div>
@@ -380,11 +390,35 @@
             const indoorSpaces = ['check-lobby', 'check-gym', 'check-indoor-pool'].filter(id => document.getElementById(id).checked).length;
             const outdoorSpaces = ['check-outdoor-pool', 'check-garden'].filter(id => document.getElementById(id).checked).length;
 
+            const reasonLowBox = document.getElementById('reason-low-budget');
+            const reasonLowList = document.getElementById('reason-list-low');
+            const reasonHighBox = document.getElementById('reason-high-budget');
+            const reasonHighList = document.getElementById('reason-list-high');
+
             let lowBudgetItems = [];
             let highBudgetItems = [];
 
-            // Nota: Las etiquetas de los productos (label) también se traducen para el usuario final.
             if (area === 'small') {
+                // --- Mostrar Razones en Español (Habitaciones < 30㎡) ---
+                reasonLowBox.classList.remove('hidden');
+                reasonLowList.innerHTML = `
+                    <li>Cobertura total de señal con Wi-Fi 6 en el pasillo para habitaciones pequeñas.</li>
+                    <li>AP dedicado de alta densidad para la sala de reuniones y buena cobertura para la piscina exterior.</li>
+                    <li>Los dispositivos AP son fáciles de instalar, pequeños y estéticos.</li>
+                    <li>El router de alto rendimiento proporciona una experiencia de red más estable y fluida.</li>
+                    <li>Portal cautivo personalizable integrado (página de inicio de sesión Wi-Fi) para publicidad y seguridad.</li>
+                    <li>Nube gratuita, límite de velocidad de usuario sencillo y gestión de alta eficiencia.</li>
+                `;
+
+                reasonHighBox.classList.remove('hidden');
+                reasonHighList.innerHTML = `
+                    <li>Excelente experiencia Wi-Fi con un AP dedicado en cada habitación.</li>
+                    <li>AP de alta calidad con prevención de corrosión por niebla salina para espacios exteriores, especialmente en ciudades costeras.</li>
+                    <li>El router de alto rendimiento proporciona una experiencia de red más estable y fluida.</li>
+                    <li>Portal cautivo personalizable integrado (página de inicio de sesión Wi-Fi) para publicidad y seguridad.</li>
+                    <li>Nube gratuita, límite de velocidad de usuario sencillo y gestión de alta eficiencia.</li>
+                `;
+
                 let n_raw = rooms / 3;
                 let n = Math.max(( ( (rooms / 3) * 10 ) % 10 > 3 ) ? Math.ceil(n_raw) : Math.floor(n_raw), 1);
                 let m = Math.ceil((n + meetings + indoorSpaces + outdoorSpaces) / 10);
@@ -412,6 +446,27 @@
                 if (m_high >= 7) highBudgetItems.splice(1, 0, { id: 'SW_CORE', model: 'RG-NBS3200-24GT4XS', label: 'Switch Core', qty: 1 });
 
             } else {
+                // --- Mostrar Razones en Español (Habitaciones > 30㎡) ---
+                reasonLowBox.classList.remove('hidden');
+                reasonLowList.innerHTML = `
+                    <li>Excelente experiencia Wi-Fi con un AP dedicado en cada habitación.</li>
+                    <li>AP dedicado de alta densidad para la sala de reuniones y buena cobertura para la piscina exterior.</li>
+                    <li>Los dispositivos AP son fáciles de instalar, pequeños y estéticos.</li>
+                    <li>El router de alto rendimiento proporciona una experiencia de red más estable y fluida.</li>
+                    <li>Portal cautivo personalizable integrado (página de inicio de sesión Wi-Fi) para publicidad y seguridad.</li>
+                    <li>Nube gratuita, límite de velocidad de usuario sencillo y gestión de alta eficiencia.</li>
+                `;
+
+                reasonHighBox.classList.remove('hidden');
+                reasonHighList.innerHTML = `
+                    <li>Excelente experiencia Wi-Fi 7 con un AP dedicado en cada habitación.</li>
+                    <li>Mejor experiencia con Wi-Fi 7 total para todos los espacios.</li>
+                    <li>Los switches con enlace descendente de 2.5G y enlace ascendente de 10G permiten un alto rendimiento de Wi-Fi 7 para los clientes.</li>
+                    <li>El router de alto rendimiento proporciona una experiencia de red más estable y fluida.</li>
+                    <li>Portal cautivo personalizable integrado (página de inicio de sesión Wi-Fi) para publicidad y seguridad.</li>
+                    <li>Nube gratuita, límite de velocidad de usuario sencillo y gestión de alta eficiencia.</li>
+                `;
+
                 let totalRAP_Low = rooms + meetings + indoorSpaces + outdoorSpaces;
                 let m_low = Math.ceil(totalRAP_Low / 12);
                 
