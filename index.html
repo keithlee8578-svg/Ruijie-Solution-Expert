@@ -26,6 +26,16 @@
         .custom-shadow {
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
+
+        /* Animación de parpadeo para el foco */
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        .animate-blink {
+            animation: blink 1s infinite;
+        }
     </style>
 </head>
 <body class="text-slate-800">
@@ -48,6 +58,14 @@
                 
                 <!-- Paso 1: Selección de Escenario -->
                 <div id="step-1" class="step-content animate-fade-in">
+                    <!-- Enlace de búsqueda por otras marcas -->
+                    <div class="mb-4 flex items-center">
+                        <i class="fas fa-lightbulb text-orange-500 mr-2 animate-blink"></i>
+                        <a href="https://ruijie.feishu.cn/share/base/query/shrcn3BWnQXZkjahWDGagTpveyc" target="_blank" class="text-blue-600 font-bold underline">
+                            Haga clic para buscar el modelo Ruijie correspondiente utilizando modelos de otras marcas
+                        </a>
+                    </div>
+
                     <h2 class="text-2xl md:text-3xl font-bold mb-2">Seleccionar Escenario</h2>
                     <p class="text-slate-500 mb-8">Ruijie ofrece soluciones específicas para diferentes escenarios.</p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
